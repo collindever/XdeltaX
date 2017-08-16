@@ -61,6 +61,8 @@ for x in trange(15):
                 allCharucoIds.append(charucoIds)
                 cv2.waitKey(3000)
                 break
+            else:
+                charucoCorners = []
 
 print("All images Aquired Running Calibration")
 #release and close
@@ -69,4 +71,7 @@ cv2.destroyAllWindows()
 
 imgSize = gray.shape
 result, mtx, dist, rvecs, tvecs = aruco.calibrateCameraCharuco(allCharucoCorners, allCharucoIds, board, imgSize, None, None)
-np.savez(args.output_filename[0], ret=result, mtx=mtx, dist=dist, rvecs=rvecs, tvecs=tvecs)
+if result is not None:
+    np.savez(args.output_filename[0], ret=result, mtx=mtx, dist=dist, rvecs=rvecs, tvecs=tvecs)
+else:
+    print("Sorry there was an issue with your Calibration please try again")
